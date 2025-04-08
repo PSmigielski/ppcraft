@@ -25,7 +25,7 @@ public class Engine {
         targetUps = opts.ups;
         this.appLogic = appLogic;
         render = new Render();
-        scene = new Scene();
+        scene = new Scene(window.getWidth(), window.getHeight());
         appLogic.init(window, scene, render);
         running = true;
     }
@@ -37,7 +37,7 @@ public class Engine {
         window.cleanup();
     }
     private void resize() {
-        Logger.info("resized");
+        scene.resize(window.getWidth(), window.getHeight());
     }
 
     private void run() {
