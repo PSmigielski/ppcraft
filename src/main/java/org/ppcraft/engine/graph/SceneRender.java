@@ -1,9 +1,12 @@
 package org.ppcraft.engine.graph;
 
 
+import org.lwjgl.system.MemoryStack;
 import org.ppcraft.engine.scene.Scene;
 import org.tinylog.Logger;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.*;
 
 import static org.lwjgl.opengl.GL30.*;
@@ -28,17 +31,24 @@ public class SceneRender {
 
     private void createUniforms() {
         uniformsMap = new UniformsMap(shaderProgram.getProgramId());
+        uniformsMap.createUniform("modelMatrix");
         uniformsMap.createUniform("projectionMatrix");
     }
     public void render(Scene scene) {
         shaderProgram.bind();
+        uniformsMap.setUniform("projectionMatrix", scene.getProjection().getProjMatrix());
 
-        scene.getMeshMap().values().forEach(mesh -> {
-                    glBindVertexArray(mesh.getVaoId());
+        Collection<Model> models = scene.getModelMap().values();
+        for (Model model : models) {
+            model.getMeshList().stream().forEach(mesh -> {
+                glBindVertexArray(mesh.getVaoId());
+                List<Entity> entities = model.getEntitiesList();
+                for (Entity entity : entities) {
+                    uniformsMap.setUniform("modelMatrix", entity.getModelMatrix());
                     glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
                 }
-        );
-        uniformsMap.setUniform("projectionMatrix", scene.getProjection().getProjMatrix());
+            });
+        }
 
         glBindVertexArray(0);
 
