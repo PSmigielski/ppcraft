@@ -72,6 +72,10 @@ public class Engine {
                 deltaFps--;
                 window.update();
             }
+            if (targetFps <= 0 || deltaFps >= 1) {
+                window.getMouseInput().input();
+                appLogic.input(window, scene, now - initialTime);
+            }
             initialTime = now;
         }
 
