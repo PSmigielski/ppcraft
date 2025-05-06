@@ -1,23 +1,21 @@
 package org.ppcraft.engine.scene;
 
 import lombok.Getter;
-import org.ppcraft.engine.graph.Entity;
-import org.ppcraft.engine.graph.Mesh;
-import org.ppcraft.engine.graph.Model;
+import org.ppcraft.engine.graph.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Scene {
-    @Getter
-    private Map<String, Model> modelMap;
 
-    @Getter
+    private Map<String, Model> modelMap;
     private Projection projection;
+    private TextureCache textureCache;
 
     public Scene(int width, int height) {
-        modelMap = new HashMap<>() {};
+        modelMap = new HashMap<>();
         projection = new Projection(width, height);
+        textureCache = new TextureCache();
     }
 
     public void addEntity(Entity entity) {
@@ -45,6 +43,11 @@ public class Scene {
         return projection;
     }
 
+    public TextureCache getTextureCache() {
+        return textureCache;
+    }
+
     public void resize(int width, int height) {
         projection.updateProjMatrix(width, height);
-    }}
+    }
+}

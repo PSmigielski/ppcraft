@@ -2,11 +2,9 @@ package org.ppcraft.engine.graph;
 
 import lombok.Getter;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryUtil;
-import org.tinylog.Logger;
+import org.lwjgl.system.*;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.nio.*;
 import java.util.*;
 
 import static org.lwjgl.opengl.GL30.*;
@@ -15,12 +13,10 @@ public class Mesh {
 
     @Getter
     private int numVertices;
-
-    @Getter
     private int vaoId;
     private List<Integer> vboIdList;
 
-    public Mesh(float[] positions, float[] colors, int[] indices) {
+    public Mesh(float[] positions, float[] textCoords, int[] indices) {
         numVertices = indices.length;
         vboIdList = new ArrayList<>();
 
@@ -37,15 +33,15 @@ public class Mesh {
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
-        // Color VBO
+        // Texture coordinates VBO
         vboId = glGenBuffers();
         vboIdList.add(vboId);
-        FloatBuffer colorsBuffer = MemoryUtil.memCallocFloat(colors.length);
-        colorsBuffer.put(0, colors);
+        FloatBuffer textCoordsBuffer = MemoryUtil.memCallocFloat(textCoords.length);
+        textCoordsBuffer.put(0, textCoords);
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
-        glBufferData(GL_ARRAY_BUFFER, colorsBuffer, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
 
         // Index VBO
         vboId = glGenBuffers();
@@ -59,7 +55,7 @@ public class Mesh {
         glBindVertexArray(0);
 
         MemoryUtil.memFree(positionsBuffer);
-        MemoryUtil.memFree(colorsBuffer);
+        MemoryUtil.memFree(textCoordsBuffer);
         MemoryUtil.memFree(indicesBuffer);
     }
 
@@ -68,4 +64,7 @@ public class Mesh {
         glDeleteVertexArrays(vaoId);
     }
 
+    public final int getVaoId() {
+        return vaoId;
+    }
 }

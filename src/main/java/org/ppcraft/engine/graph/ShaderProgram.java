@@ -40,6 +40,7 @@ public class ShaderProgram {
         if (shaderId == 0) {
             throw new RuntimeException("Error creating shader. Type: " + shaderType);
         }
+
         glShaderSource(shaderId, shaderCode);
         glCompileShader(shaderId);
 

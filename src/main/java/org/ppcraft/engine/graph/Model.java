@@ -1,23 +1,33 @@
 package org.ppcraft.engine.graph;
-import lombok.Getter;
+import org.ppcraft.engine.scene.Entity;
 
 import java.util.*;
-public class Model {
-    @Getter
-    private final String id;
-    @Getter
-    private List<Entity> entitiesList;
-    @Getter
-    private List<Mesh> meshList;
 
-    public Model(String id, List<Mesh> meshList) {
+public class Model {
+
+    private final String id;
+    private List<Entity> entitiesList;
+    private List<Material> materialList;
+
+    public Model(String id, List<Material> materialList) {
         this.id = id;
-        this.meshList = meshList;
         entitiesList = new ArrayList<>();
+        this.materialList = materialList;
     }
 
     public void cleanup() {
-        meshList.forEach(Mesh::cleanup);
+        materialList.forEach(Material::cleanup);
     }
 
+    public List<Entity> getEntitiesList() {
+        return entitiesList;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public List<Material> getMaterialList() {
+        return materialList;
+    }
 }

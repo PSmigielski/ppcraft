@@ -1,11 +1,11 @@
 package org.ppcraft.engine;
 
-import org.ppcraft.engine.graph.Render;
-import org.ppcraft.engine.scene.Scene;
+import org.ppcraft.engine.graph.*;
+import org.ppcraft.engine.scene.*;
+import org.ppcraft.engine.*;
 
 import org.tinylog.Logger;
 public class Engine {
-
 
     public static final int TARGET_UPS = 30;
     private final IAppLogic appLogic;
@@ -36,6 +36,7 @@ public class Engine {
         scene.cleanup();
         window.cleanup();
     }
+
     private void resize() {
         scene.resize(window.getWidth(), window.getHeight());
     }

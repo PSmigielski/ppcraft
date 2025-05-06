@@ -8,6 +8,7 @@ import org.ppcraft.engine.scene.Scene;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Render {
+
     private SceneRender sceneRender;
 
     public Render() {
@@ -17,7 +18,7 @@ public class Render {
     }
 
     public void cleanup() {
-
+        sceneRender.cleanup();
     }
 
     public void render(Window window, Scene scene) {
